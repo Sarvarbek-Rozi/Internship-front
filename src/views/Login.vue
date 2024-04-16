@@ -4,21 +4,21 @@
       <el-card
           v-loading="code != '' || loading"
           class="box-card classic-style"
+          style="margin-top: 200px  ;"
       >
         <p class="text-center" style="font-size: 20px; margin: 0 0 20px;">
-          {{ $t('маил ва паролни киритинг') }}
+          {{ $t('Email va parolni kiriting!') }}
         </p>
         <el-row>
           <el-form
               ref="login-form"
-              :label-position="top"
               label-width="100px"
               class="login-form-custom"
           >
-            <el-form-item :label="$t('Логин')" class="mb-2">
+            <el-form-item :label="$t('Email')" class="mb-2">
               <input v-model="form.email" @keyup.enter="checkFieldsFilled()" />
             </el-form-item>
-            <el-form-item :label="$t('Парол')" class="mb-0">
+            <el-form-item :label="$t('Parol')" class="mb-0">
               <input v-model="form.password" type="password" @keyup.enter="checkFieldsFilled()">
             </el-form-item>
           </el-form>
@@ -50,12 +50,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions({ loginKadrlar: 'auth/loginKadrlar', login: 'auth/login' }),
+    ...mapActions({login: 'auth/login' }),
     submitLogin() {
       this.loading = true
       this.login(this.form)
           .then(res => {
-            this.$router.push({ name: 'CitizensIndex' })
+            if(res.result.user.role_id==2){
+              this.$router.push({ name: 'CitizensIndex' })
+            }
+            else if(res.result.user.role_id==1){
+              this.$router.push({ name: 'DoctorsIndex' })
+            }
           })
           .catch(err => {
             this.showLoginError(err)
@@ -77,9 +82,9 @@ export default {
     showLoginError($type) {
       var message
       if ($type === 'empty') {
-        message = this.$t('Логин ёки парол киритилмади')
+        message = this.$t('Email ёки парол киритилмади')
       } else {
-        message = this.$t('Логин ёки парол хато')
+        message = this.$t('Email ёки парол хато')
       }
       this.$message({
         message: message,

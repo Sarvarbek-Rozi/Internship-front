@@ -1,43 +1,95 @@
 <template>
-  <div class="header">
-    <div class="w-100 bg-white py-2">
-      <div class="container bg-white">
-        <div class="d-flex justify-content-between">
-          <div class="d-flex text-start" style="font-size: 14px">
-            <img alt="logo" src="@/assets/images/small-calendar.svg" height="14px" class="mr-2 mt-1"> {{ $t('Сана:') }} {{ date }} г.
+  <div>
+
+    <!-- Topbar Start -->
+      <div class="row gx-0 d-none d-lg-flex" style="background-color: #f2f6fc!important;">
+        <div class="col-lg-7 px-5 text-start">
+          <div class="h-100 d-inline-flex align-items-center py-3 me-4">
+            <small>123 Ko`cha, Toshkent, UZB</small>
           </div>
-          <div v-if="is_auth" class="d-flex" style="cursor: pointer" @click="logoutHandle()">
-            {{ $t('Тизимдан чиқиш') }} <img alt="logo" src="@/assets/images/logout.svg" height="14px" class="ml-2 mt-1  ">
+          <div class="h-100 d-inline-flex align-items-center py-3">
+            <small>Mon - Fri : 09.00 AM - 09.00 PM</small>
           </div>
-          
+        </div>
+        <div class="col-lg-5 px-5 text-end">
+          <div class="h-100 d-inline-flex align-items-center py-3 me-4">
+            <small></small>
+            <small class="text-primary">Tel:+998942719911</small>
+            <small v-if="is_auth" class="d-flex ml-4 text-warning" style="cursor: pointer" @click="logoutHandle()">
+              {{ $t('Тизимдан чиқиш') }} <img alt="logo" src="@/assets/images/logout.svg" height="14px" class="ml-2 mt-1 ">
+            </small>
+          </div>
+
         </div>
       </div>
-    </div>
-    <el-menu
-      class="el-menu-custom px-1"
-      mode="horizontal"
-      active-text-color="#fff"
-      text-color="#fff"
-      background-color="#3186FB"
-      @select="handleSelect"
-    >
-      <el-submenu index="2" style="float: right;">
-        <template slot="title">
-          {{ selectedLanguage }}
-        </template>
-        <el-menu-item index="2-1" @click="changeLocale('uz_crl')">Ўзбекча</el-menu-item>
-        <el-menu-item index="2-1" @click="changeLocale('ru')">Русский</el-menu-item>
-      </el-submenu>
-      <el-menu-item v-if="!is_auth" index="1" class="d-none d-sm-none d-md-block"><router-link :to="'/'"> <img alt="logo" width="300px" height="60px" src="@/assets/images/logouz.png"> </router-link></el-menu-item>
-      <el-menu-item v-if="is_auth" index="3" class="d-none d-sm-none d-md-block"><router-link :to="{name: 'CitizensIndex'}"> <img alt="logo" width="300px" height="60px" src="@/assets/images/logouz.png"> </router-link></el-menu-item>
-      <el-menu-item v-if="is_auth" index="3" style="float: right;">{{ user_full_name }}</el-menu-item>
-      <el-menu-item  v-if="is_auth" index="3" style=" line-height: 88px; float: right;"><router-link :to="{name: 'ApplicationsIndex'}">{{ $t('Аризалар') }} </router-link></el-menu-item>
-      <el-menu-item v-if="is_auth" index="3" style="float: right; line-height: 89px;"><router-link :to="{name: 'ApplicationCheckYouth'}"> {{ $t('Aриза ҳолатини текшириш') }} </router-link> </el-menu-item>
-      <el-menu-item v-if="is_auth" index="3" style="float: right; line-height: 89px;"><router-link :to="{name: 'CitizensIndex'}">{{ $t('Асосий рўйхат') }} </router-link> </el-menu-item>
-      <el-menu-item v-if="is_auth && user.role_id === 1" index="3" style="float: right; line-height: 89px;"><router-link :to="{name: 'Report'}"> {{ $t('Фуқоро хисоботи') }}   </router-link></el-menu-item>
-      <el-menu-item v-if="is_auth && user.role_id === 1" index="3" style="float: right; line-height: 89px;"><router-link :to="{name: 'ReportApplication'}"> {{ $t('Аризалар ҳисоботи') }}  </router-link></el-menu-item>
-    </el-menu>
+
+    <!-- Topbar End -->
+
+
+    <!-- Navbar Start -->
+    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0 wow fadeIn" data-wow-delay="0.1s">
+      <a href="" class="navbar-brand d-flex align-items-center px-4 px-lg-5 ">
+        <router-link :to="'/'"> <h1 class="m-0 text-primary"><i class="far fa-hospital me-3"></i>Klinik</h1></router-link>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarCollapse" >
+        <el-menu
+            mode="horizontal"
+            text-color="#000"
+            background-color="#fff"
+            @select="handleSelect"
+            style="margin-right:0!important;"
+        >
+          <el-menu-item  v-if="is_auth && user.role_id===2"   style="float: right;" >
+            <div class="btn btn-primary   d-lg-block  mt-3" >
+              <router-link :to="{name: 'CitizensIndex'}" style="text-decoration: none" >
+                <div>  {{ user_full_name }}</div>
+              </router-link>
+            </div>
+          </el-menu-item>
+          <el-menu-item v-else-if="is_auth && user.role_id===1" style="float: right;">
+            <div class="btn btn-primary   d-lg-block  mt-3" >
+              <router-link :to="{name: 'DoctorsIndex'}" style="text-decoration: none" >
+                <div>  {{ user_full_name }}</div>
+              </router-link>
+            </div>
+          </el-menu-item>
+          <el-menu-item v-if="!is_auth" style="line-height: 89px;">
+            <router-link :to="{name: 'ApplicationCheckYouth'}" style="text-decoration: none" >
+              <div>{{$t('Aриза ҳолатини текшириш')}}</div>
+            </router-link>
+          </el-menu-item>
+          <el-menu-item v-if="is_auth && user.role_id === 2"  style=" line-height: 88px;">
+            <router-link :to="{name: 'ApplicationsIndex'}" style="text-decoration: none">
+              <div>{{$t('Сўровлар')}}</div>
+            </router-link>
+          </el-menu-item>
+          <el-submenu  >
+            <template slot="title">
+              {{ selectedLanguage }}
+            </template>
+            <el-menu-item index="2-1" @click="changeLocale('uz_crl')">Ўзбекча</el-menu-item>
+            <el-menu-item index="2-1" @click="changeLocale('ru')">Русский</el-menu-item>
+          </el-submenu>
+
+          <el-menu-item  v-if="!is_auth" index="4" style="float: right; line-height: 89px;">
+              <router-link :to="{ name:'Login' }" style="text-decoration: none;">
+                <div class="text-white btn btn-primary rounded-0 py-3 px-lg-4 d-none d-lg-block mt-2" style="border-radius: 20px!important; ">
+                  {{ $t('Aдминистраторлар учун кириш') }}
+                  <img
+                      alt="logo"
+                      src="@/assets/images/login.svg"
+                      height="14px"
+                      class="ml-2 mt-1 bg-white"
+                  >
+                </div>
+              </router-link>
+          </el-menu-item>
+        </el-menu>
+      </div>
+    </nav>
+    <!-- Navbar End -->
   </div>
+
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex'
@@ -50,22 +102,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({ is_auth: 'auth/GET_IS_AUTH', user_full_name: 'auth/USER_FULL_NAME', user: 'auth/USER' }),
-    date() {
-      var today = new Date()
-      var dd = String(today.getDate()).padStart(2, '0')
-      var mm = String(today.getMonth() + 1).padStart(2, '0') // January is 0!
-      var yyyy = today.getFullYear()
-      return dd + '.' + mm + '.' + yyyy
-    }
+    ...mapGetters({ is_auth: 'auth/GET_IS_AUTH', user_full_name: 'auth/USER_FULL_NAME', user: 'auth/USER'}),
   },
-//   created() {
-//     this.selectedLanguage(this.$i18n.locale)
-//   },
   methods: {
     ...mapActions({ logout: 'auth/logout' , changeLocaleAction: 'app/changeLocale' }),
     handleSelect(index, indexPath) {
-      console.log(index)
     },
     changeLocale(lang) {
       this.changeLocaleAction(lang)
@@ -79,15 +120,11 @@ export default {
         default: this.selectedLanguage = 'O\'zbekcha'; break
       }
     },
-    loginViaAuthService() {
-      window.location = String(this.authServiceLink).replace('[domain]', window.location.hostname)
-    },
     logoutHandle() {
       this.logout()
-        .then(res => {
-          var fullUrl = window.location.origin + '/'
-          window.location = fullUrl
-        })
+          .then(res => {
+            window.location = '/'
+          })
     }
   }
 }

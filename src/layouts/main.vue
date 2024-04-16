@@ -1,7 +1,7 @@
 <template>
 <div>
 <Header/>
-    <div>
+    <div style="background-color: #f2f6fc; height: 800px">
          <router-view/>
     </div>
 </div>

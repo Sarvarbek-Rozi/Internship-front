@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'migration_token'
+const TokenKey = 'intern_token'
 
 export function getToken() {
   return Cookies.get(TokenKey)

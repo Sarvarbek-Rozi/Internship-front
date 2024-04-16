@@ -6,10 +6,10 @@ export function login(data) {
         data
     })
 }
-export function loginKadrlar(data) {
+
+export function logout() {
     return request({
-        url: 'login/kadrlar',
-        method: 'post',
-        data
+        url: '/auth/logout',
+        method: 'post'
     })
 }
